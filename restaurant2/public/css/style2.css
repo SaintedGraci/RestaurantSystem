@@ -1,0 +1,41 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#head1{
+    text-align: center;
+    margin-top: 50px;
+    margin-left: 0px;
+}
+
+#dashboard {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+   
+}
+
+#btn1{
+    margin-left: 250px;
+    margin-top: 100px;
+    padding: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: large;
+    cursor: pointer;
+}
+
+#btn2{
+     margin-right: 100px;
+    margin-top: 100px;
+    padding: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: large;
+    cursor: pointer;
+}
+
+.btnmother{
+    margin-left: 100px;
+    margin-top: 50px;
+}

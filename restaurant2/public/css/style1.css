@@ -1,0 +1,29 @@
+.subcon3 {
+    margin-left: 800px;
+    margin-top: 40px;
+}
+
+.subcon1{
+    position: absolute;
+    margin-top: 40px;
+    margin-left: 25px;
+}
+
+
+.subcon2{
+    position: absolute;
+    margin-top: 40px;
+}
+
+.subcon4 {
+    position: absolute;
+    margin-top: 150px;
+    margin-left: 350px;
+}
+
+.subcon5 {
+    position: absolute;
+    margin-top: 500px;         /* Match .subcon4 to align horizontally */
+    margin-right: 20px;        /* Adjust this value to position it to the right */
+}
+
