@@ -1,17 +1,20 @@
 <?php
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\WebController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
+// Public customer routes (UI)
+Route::get('/', [WebController::class, 'home']);
+Route::get('/About', [WebController::class, 'about']);
 
-
-// Route to show the login page
+// Authentication routes for login and logout
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Admin dashboard (protected by role: admin)
+// Admin dashboard routes (protected by role: admin)
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin', function () {
         return view('admin.dashboard');
@@ -25,6 +28,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/admin/users/{admin}', [AdminUserController::class, 'update'])->name('admin.users.update');
     Route::delete('/admin/users/{admin}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
     
-    // Admin manage user menu
+    // Admin manage menu
     Route::get('/admin/manage-menu', [AdminUserController::class, 'manageMenu'])->name('admin.manage-menu');
 });
