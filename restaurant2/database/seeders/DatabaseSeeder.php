@@ -15,14 +15,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // seed default admin
-        Admin::query()->firstOrCreate(
-            ['email' => 'admin@example.com'],
-            [
-                'name' => 'Super Admin',
-                'password' => Hash::make('password'),
-                'role' => 'admin',
-            ]
-        );
+        $this->call(AdminSeeder::class);
     }
 }

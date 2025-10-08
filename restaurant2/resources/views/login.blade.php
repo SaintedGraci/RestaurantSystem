@@ -29,7 +29,7 @@
                 @if ($errors->any())
                     <p class="text-red-600 text-sm mt-2">{{ $errors->first() }}</p>
                 @endif
-                <button type="submit" class="bg-gray-900 text-white py-2 px-4 rounded hover:bg-gray-800 ml-24 mt-3.5">Submit</button>
+                <button type="submit" class="bg-gray-900 text-white py-2 px-4 rounded hover:bg-gray-800 ml-24 mt-3.5">LogIn</button>
             </form>                    
         </div>
     </div>

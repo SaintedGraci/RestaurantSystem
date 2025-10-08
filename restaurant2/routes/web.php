@@ -2,9 +2,13 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\Admin\MenuItemController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UIcontroller;
 
 
+//ui
+Route::get('/location', [UIcontroller::class, 'location'])->name('location');
 
 // Route to show the login page
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -21,10 +25,19 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/users/create', [AdminUserController::class, 'create'])->name('admin.users.create');
     Route::post('/admin/users', [AdminUserController::class, 'store'])->name('admin.users.store');
     Route::get('/admin/users', [AdminUserController::class, 'index'])->name('admin.users.index');
-    Route::get('/admin/users/{admin}/edit', [AdminUserController::class, 'edit'])->name('admin.users.edit');
-    Route::put('/admin/users/{admin}', [AdminUserController::class, 'update'])->name('admin.users.update');
-    Route::delete('/admin/users/{admin}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('/admin/users/{id}/edit', [AdminUserController::class, 'edit'])->name('admin.users.edit');
+    Route::put('/admin/users/{id}', [AdminUserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/admin/users/{id}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
     
     // Admin manage user menu
     Route::get('/admin/manage-menu', [AdminUserController::class, 'manageMenu'])->name('admin.manage-menu');
+    Route::post('/admin/menu-items', [MenuItemController::class, 'store'])->name('admin.menu-items.store');
+    Route::get('/admin/menu-items', [AdminUserController::class, 'indexMenuItems'])->name('admin.menu-items.index');
+    Route::get('/admin/menu-items/{id}/edit', [MenuItemController::class, 'edit'])->name('admin.menu-items.edit');
+    Route::put('/admin/menu-items/{id}', [MenuItemController::class, 'update'])->name('admin.menu-items.update');
+    Route::delete('/admin/menu-items/{id}', [MenuItemController::class, 'destroy'])->name('admin.menu-items.destroy');
+
+    
+
+    //UI
 });
