@@ -1,6 +1,6 @@
     <div class="w-full max-w-xl bg-white rounded-lg shadow-md p-6">
         <h2 class="text-2xl font-semibold mb-4 text-gray-700">Add New Menu Item</h2>
-
+        <a href="{{ route('admin.dashboard') }}" class="text-blue-600">Back to Dashboard</a>
         <!-- Success Message -->
         @if(session('success'))
             <div class="mb-4 text-green-600 font-medium">
