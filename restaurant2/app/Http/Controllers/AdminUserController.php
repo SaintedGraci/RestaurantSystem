@@ -6,12 +6,16 @@ use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Models\MenuItem;
 
 class AdminUserController extends Controller
 {
-    public function create()
+    public function create(Request $request)
     {
-        return view('admin.users.create');
+        if ($request->ajax()) {
+            return view('admin.users.partials.create')->render();
+        }
+        return view('admin.dashboard', ['content_view' => 'admin.users.partials.create']);
     }
 
     public function store(Request $request)
@@ -33,24 +37,49 @@ class AdminUserController extends Controller
         return redirect()->route('admin.users.create')->with('status', 'Account created successfully.');
     }
 
-    public function manageMenu()
+    public function manageMenu(Request $request)
     {
-        return view('admin.manageUser.manageMenu');
+        // You would typically fetch menu data here
+        // $menuItems = []; // Replace with actual menu item fetching logic
+
+        if ($request->ajax()) {
+            return view('admin.manageUser.managemenuitems')->render();
+        }
+
+        return view('admin.dashboard', ['content_view' => 'admin.manageUser.managemenuitems']);
     }
 
-    public function index()
+    public function indexMenuItems(Request $request)
+    {
+        $menuItems = MenuItem::orderByDesc('created_at')->paginate(10);
+
+        if ($request->ajax()) {
+            return view('admin.manageUser.partials.index_menu_items', compact('menuItems'))->render();
+        }
+
+        return view('admin.dashboard', ['content_view' => 'admin.manageUser.partials.index_menu_items', 'menuItems' => $menuItems]);
+    }
+
+    public function index(Request $request)
     {
         $admins = Admin::orderByDesc('created_at')->paginate(10);
-        return view('admin.users.index', compact('admins'));
+
+        if ($request->ajax()) {
+            return view('admin.users.partials.index', compact('admins'))->render();
+        }
+
+        return view('admin.dashboard', ['content_view' => 'admin.users.partials.index', 'admins' => $admins]);
     }
 
-    public function edit(Admin $admin)
+    public function edit(int $id)
     {
+        $admin = Admin::findOrFail($id);
         return view('admin.users.edit', compact('admin'));
     }
 
-    public function update(Request $request, Admin $admin)
+    public function update(Request $request, int $id)
     {
+        $admin = Admin::findOrFail($id);
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:admins,email,' . $admin->id],
@@ -74,8 +103,9 @@ class AdminUserController extends Controller
         return redirect()->route('admin.users.index')->with('status', 'User updated successfully.');
     }
 
-    public function destroy(Admin $admin)
+    public function destroy(int $id)
     {
+        $admin = Admin::findOrFail($id);
         $admin->delete();
         return redirect()->route('admin.users.index')->with('status', 'User deleted successfully.');
     }
