@@ -6,6 +6,8 @@
   <title>@yield('title', 'Admin Dashboard')</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
+
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{{ asset('css/style3.css') }}" />
   <meta name="csrf-token" content="{{ csrf_token() }}">

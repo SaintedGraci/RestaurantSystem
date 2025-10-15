@@ -37,10 +37,18 @@ class MenuItemController extends Controller
         return back()->with('success', 'Menu item added successfully!');
     }
 
-    public function edit(int $id)
+    public function edit(Request $request, int $id)
     {
         $menuItem = MenuItem::findOrFail($id);
-        return view('admin.manageUser.partials.edit_menu_item', compact('menuItem'));
+        
+        if ($request->ajax()) {
+            return view('admin.manageUser.partials.edit_menu_item', compact('menuItem'))->render();
+        }
+        
+        return view('admin.dashboard', [
+            'content_view' => 'admin.manageUser.partials.edit_menu_item',
+            'menuItem' => $menuItem
+        ]);
     }
 
     public function update(Request $request, int $id)

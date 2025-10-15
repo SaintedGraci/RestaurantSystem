@@ -2,49 +2,35 @@ services:
   nginx:
     build:
       context: ./docker/nginx
-  
     ports:
       - "80:80"
     volumes:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./restaurant2:/var/www/html # replace project_name with your desired value
+      - ./restaurant2:/var/www/html
     depends_on:
       - php
+      - mysql
 
   php:
     build:
       context: ./docker/php
-    expose:
-      - "9000" # replaced 9001 if there is conflict on this port.
-    ports:
-      - "8081:9000" # replaced 9001 if there is conflict on this port.
     volumes:
-      - ./restaurant2:/var/www/html # replace project_name with your desired value
+      - ./restaurant2:/var/www/html
     depends_on:
       - mysql
 
   mysql:
-    build:
-      context: ./docker/mysql
-    container_name: rc-db
-    platform: linux/x86_64
-    ports:
-      - "3307:3307" # replaced 3307 if there is conflict on this port. usuall value is 3306
+    image: mysql:8.0
+    restart: always
     environment:
-      - "LANG=C.UTF-8"
-      - "MYSQL_ROOT_PASSWORD=root" # replaced password on your desired value
-      - "MYSQL_DATABASE=root" # replaced database name on your desired value
-      - "MYSQL_PASSWORD=root"
-    command: --port=3307
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: restaurant_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3307:3306"
     volumes:
-      - type: volume
-        source: mysql-volume
-        target: /var/lib/mysql
-
-networks:
-  default:
-    driver: bridge
+      - db_data:/var/lib/mysql
 
 volumes:
-  mysql-volume:
-    driver: local
+  db_data:

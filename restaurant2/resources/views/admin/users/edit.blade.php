@@ -1,19 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit User</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
-    <style>body{font-family:'Poppins',sans-serif;}</style>
-</head>
-<body class="bg-gray-50">
+@extends('admin.dashboard')
+
+@section('content')
     <div class="max-w-xl mx-auto py-10">
         <div class="mb-6 flex justify-between items-center">
-            <h1 class="text-2xl font-bold mt-48">Edit User</h1>
+            <h1 class="text-2xl font-bold">Edit User</h1>
             <a href="{{ route('admin.users.index') }}" class="text-blue-600">Back to Users</a>
-             
         </div>
         <form method="POST" action="{{ route('admin.users.update', $admin->id) }}" class="space-y-4 bg-white p-6 rounded shadow">
             @csrf
@@ -50,5 +41,4 @@
             </div>
         </form>
     </div>
-</body>
-</html>
+@endsection
