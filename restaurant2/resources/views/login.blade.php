@@ -6,8 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADMIN LOGIN</title>
     <script src="https://cdn.tailwindcss.com"></script>
+<<<<<<< HEAD
     <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
     <link rel="stylesheet" href="/css/style.css" />
+=======
+    <link rel="stylesheet" href="/css/style.css" />w
+>>>>>>> develop
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
 </head>
 <body>
