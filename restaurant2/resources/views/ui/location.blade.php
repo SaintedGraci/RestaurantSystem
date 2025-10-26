@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Tindahan ni Aling Dadai</title>
+    <title>Location - Tindahan ni Aling Dadai</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -13,7 +13,6 @@
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(to bottom right, #e0f2df, #ffffff);
             color: #2e2e2e;
-            scroll-behavior: smooth;
         }
 
         /* Header */
@@ -35,7 +34,6 @@
             width: 70px;
             height: auto;
             border-radius: 16px;
-            box-shadow: 0 2px 8px rgba(90,109,60,0.1);
         }
 
         .header nav {
@@ -62,50 +60,51 @@
 
         /* Main Content */
         .main-content {
-            margin-top: 120px;
-            max-width: 1000px;
+            margin-top: 100px;
+            padding: 2rem;
+            max-width: 1200px;
             margin-left: auto;
             margin-right: auto;
-            padding: 2.5rem;
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            box-shadow: 0 4px 24px rgba(90,109,60,0.1);
         }
 
-        .title {
+        .location-title {
             text-align: center;
-            font-size: 2.3rem;
+            font-size: 2.5rem;
             font-weight: bold;
             color: #4f6f52;
-            margin-bottom: 1.2rem;
-        }
-
-        .subtitle {
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #6b5e3c;
             margin-bottom: 2rem;
         }
 
-        .about-content {
+       .location-images {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.location-images img {
+    width: 450px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(79, 111, 82, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.location-images img:hover {
+    transform: scale(1.02);
+}
+
+        .location-info {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 2rem;
+            border-radius: 20px;
+            margin-top: 2rem;
+            box-shadow: 0 4px 24px rgba(90,109,60,0.1);
             font-size: 1.1rem;
             line-height: 1.8;
-            color: #333;
             text-align: justify;
-            margin-bottom: 2rem;
-        }
-
-        .location-highlight {
-            background: rgba(79, 111, 82, 0.1);
-            padding: 1.5rem;
-            border-radius: 16px;
-            margin-top: 2rem;
-        }
-
-        .location-highlight::before {
-            content: '📍 ';
         }
 
         /* Footer */
@@ -117,7 +116,6 @@
             margin-top: 4rem;
             border-top-left-radius: 18px;
             border-top-right-radius: 18px;
-            box-shadow: 0 -2px 12px rgba(90,109,60,0.08);
         }
 
         .footer-content {
@@ -173,25 +171,17 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <h1 class="title">TINDAHAN NI ALING DADAI</h1>
-        <h2 class="subtitle">ALING DADAI'S FILIPINO DISHES</h2>
+        <h1 class="location-title">TINDAHAN NI ALING DADAI</h1>
+        <h2 style="text-align: center; color: #6b5e3c;">Our Location</h2>
 
-        <div class="about-content">
-            <p>
-                Tindahan ni Aling Dadai is your gateway to the rich and diverse flavors of the Philippines. From savory favorites like lechon baboy and lumpiang shanghai to sweet indulgences such as halo-halo, every dish is lovingly prepared to bring the comfort of home and the spirit of tradition to your table.
-            </p>
+  <div class="location-images">
+    <img src="http://127.0.0.1:5500/map.png" alt="Map" class="map">
+    <img src="https://archify-images-prod.s3.ap-southeast-1.amazonaws.com/files/professional/projects/s/gp4b8fmt5u.jpg" alt="Benedicto College" class="building">
+</div>
 
-            <p>
-                Our mission is simple: to share authentic Filipino cuisine with both locals and visitors, celebrating the heart and culture of the Philippines in every bite. Whether you're craving a hearty meal, a quick merienda, a refreshing drink, or a delightful dessert, you'll always find something here that feels like home.
-            </p>
-
-            <p>
-                Every recipe is crafted with fresh ingredients, time-honored cooking methods, and a generous serving of love. Because for us, food is more than nourishment—it is a bridge that connects people, preserves heritage, and creates memories worth keeping.
-            </p>
-
-            <div class="location-highlight">
-                Located in the heart of Mandaue City, inside Benedicto College Artists Hall along A.S. Fortuna Street, we welcome you to experience not just Filipino food, but Filipino hospitality at its finest.
-            </div>
+        <div class="location-info">
+            <p>The place is located inside Benedicto College, specifically near the Artists Hall, which makes it easy to find for students and visitors. It is situated along A.S. Fortuna Street in Mandaue City, Cebu, a well-known road that is accessible to many.</p>
+            <p>The landmark to remember is that it's inside Benedicto College, so once you're there, you just need to head towards the Artists Hall. The business is open from Monday to Saturday, between 9:00 AM and 7:00 PM, making it convenient to visit during the day.</p>
         </div>
     </div>
 

@@ -1,114 +1,83 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use App\Models\MenuItem;
 
 class AdminUserController extends Controller
 {
-    public function create(Request $request)
+    // Display a listing of all users
+    public function index()
     {
-        if ($request->ajax()) {
-            return view('admin.users.partials.create')->render();
-        }
-        return view('admin.dashboard', ['content_view' => 'admin.users.partials.create']);
+        $admins = Admin::all();
+        return view('admin.users.index', compact('admins'));
     }
 
+    // Show the form for creating a new user
+    public function create()
+    {
+        return view('admin.users.create'); // Return the user creation view
+    }
+
+    // Store a newly created user in storage
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:admins,email'],
-            'password' => ['required', 'string', 'min:6'],
-            'role' => ['required', 'in:admin,manager,cashier'],
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:admins',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|string',
         ]);
 
-        Admin::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role' => $validated['role'],
+        $admin = new Admin();
+        $admin->name = $request->name;
+        $admin->email = $request->email;
+        $admin->password = Hash::make($request->password);
+        $admin->role = $request->role;
+        $admin->save();
+
+        return redirect()->route('admin.users.index')->with('success', 'User created successfully!');
+    }
+
+    // Show the form for editing the specified user
+    public function edit($id)
+    {
+        $user = Admin::findOrFail($id);
+        return view('admin.users.edit', compact('user'));
+    }
+
+    // Update the specified user in storage
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:admins,email,' . $id,
+            'role' => 'required|string',
         ]);
 
-        return redirect()->route('admin.users.create')->with('status', 'Account created successfully.');
-    }
-
-    public function manageMenu(Request $request)
-    {
-        // You would typically fetch menu data here
-        // $menuItems = []; // Replace with actual menu item fetching logic
-
-        if ($request->ajax()) {
-            return view('admin.manageUser.managemenuitems')->render();
-        }
-
-        return view('admin.dashboard', ['content_view' => 'admin.manageUser.managemenuitems']);
-    }
-
-    public function indexMenuItems(Request $request)
-    {
-        $menuItems = MenuItem::orderByDesc('created_at')->paginate(10);
-
-        if ($request->ajax()) {
-            return view('admin.manageUser.partials.index_menu_items', compact('menuItems'))->render();
-        }
-
-        return view('admin.dashboard', ['content_view' => 'admin.manageUser.partials.index_menu_items', 'menuItems' => $menuItems]);
-    }
-
-    public function index(Request $request)
-    {
-        $admins = Admin::orderByDesc('created_at')->paginate(10);
-
-        if ($request->ajax()) {
-            return view('admin.users.partials.index', compact('admins'))->render();
-        }
-
-        return view('admin.dashboard', ['content_view' => 'admin.users.partials.index', 'admins' => $admins]);
-    }
-
-    public function edit(int $id)
-    {
         $admin = Admin::findOrFail($id);
-        return view('admin.users.edit', compact('admin'));
-    }
+        $admin->name = $request->name;
+        $admin->email = $request->email;
+        $admin->role = $request->role;
 
-    public function update(Request $request, int $id)
-    {
-        $admin = Admin::findOrFail($id);
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:admins,email,' . $admin->id],
-            'password' => ['nullable', 'string', 'min:6'],
-            'role' => ['required', 'in:admin,manager,cashier'],
-        ]);
-
-        $updateData = [
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'role' => $validated['role'],
-        ];
-
-        // Only update password if provided
-        if (!empty($validated['password'])) {
-            $updateData['password'] = Hash::make($validated['password']);
+        if ($request->filled('password')) {
+            $admin->password = Hash::make($request->password);
         }
 
-        $admin->update($updateData);
+        $admin->save();
 
-        return redirect()->route('admin.users.index')->with('status', 'User updated successfully.');
+        return redirect()->route('admin.users.index')->with('success', 'User updated successfully!');
     }
 
-    public function destroy(int $id)
+    // Remove the specified user from storage
+    public function destroy($id)
     {
         $admin = Admin::findOrFail($id);
         $admin->delete();
-        return redirect()->route('admin.users.index')->with('status', 'User deleted successfully.');
+
+        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully!');
     }
 }
-
-

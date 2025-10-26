@@ -14,4 +14,10 @@ class MenuItem extends Model
         'group_name',
         'price',
     ];
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+    
 }

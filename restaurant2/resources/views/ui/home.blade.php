@@ -168,12 +168,16 @@ a {
   border-radius: 30px;
   margin-top: 1rem;
   cursor: pointer;
+   display: inline-block;
+  text-decoration: none;
 }
 
 .carousel-btn:hover {
   background: #3e5741;
   transform: scale(1.05);
+  color: #fff; /* Ensures text stays white on hover */
 }
+
 
 /* Carousel arrows */
 .carousel-control {
@@ -425,12 +429,12 @@ a {
 <!-- 🌿 Header -->
 <div class="header">
   <img src="https://cdn-icons-png.flaticon.com/128/4035/4035183.png" alt="Logo" class="logo" />
-  <nav>
-    <a href="#">Home</a>
-    <a href="#">Menu</a>
-    <a href="#">About Us</a>
-    <a href="#location">Location</a>
-  </nav>
+<nav>
+    <a href="{{ route('home') }}">Home</a>
+    <a href="{{ route('menu') }}">Menu</a>
+    <a href="{{ route('about') }}">About Us</a>
+    <a href="{{ route('location') }}">Location</a>
+</nav>
 </div>
 
 <!-- 🌿 Hero Carousel -->
@@ -441,7 +445,7 @@ a {
 
   <div class="carousel-overlay">
     <h1 class="carousel-title" id="carouselCaption">Discover Authentic Filipino Cuisine</h1>
-    <button class="carousel-btn">Explore Menu</button>
+    <a href="{{ route('menu') }}"><button class="carousel-btn">Explore Menu</button></a>
   </div>
 
   <button id="prevBtn" class="carousel-control">&#10094;</button>
@@ -504,11 +508,12 @@ a {
 
 
 <!-- 🌿 Visit Us Section -->
+<!-- 🌿 Visit Us Section -->
 <section class="location-section" id="location">
   <div class="overlay">
     <h2>Location</h2>
     <p>Located in the heart of Cebu — experience Filipino dining at its finest.</p>
-    <button class="carousel-btn">Get Directions</button>
+    <a href="{{ route('location') }}" class="carousel-btn">Get Directions</a>
   </div>
 </section>
 
