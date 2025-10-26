@@ -11,6 +11,7 @@ services:
       - ./restaurant2:/var/www/html
     depends_on:
       - php
+      - mysql
 
   php:
     build:
@@ -25,22 +26,22 @@ services:
       - mysql
 
   mysql:
-    build:
-      context: ./docker/mysql
-    container_name: rc-db
+    image: mysql:8.0
+    restart: always
     platform: linux/x86_64
-    ports:
-      - "3307:3306"   # Maps container's 3306 to host's 3307
     environment:
-      - LANG=C.UTF-8
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=root
-      - MYSQL_PASSWORD=root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: restaurant_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      LANG: C.UTF-8
+    ports:
+      - "3307:3306"  # Maps container's 3306 to host's 3307
     volumes:
-      - mysql-volume:/var/lib/mysql
+      - db_data:/var/lib/mysql
 
 volumes:
-  mysql-volume:
+  db_data:
 
 networks:
   default:

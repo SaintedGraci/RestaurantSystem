@@ -14,22 +14,23 @@ class LoginController extends Controller
         return view('login');
     }
 
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([ 
-            'username' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-        
-        $admin = Admin::where('email', $credentials['username'])->first();
+   
+public function login(Request $request)
+{
+    $credentials = $request->validate([ 
+        'username' => ['required', 'email'],
+        'password' => ['required'],
+    ]);
+    
+    $admin = Admin::where('email', $credentials['username'])->first();
 
-        if ($admin && Hash::check($credentials['password'], $admin->password)) {
-            Auth::login($admin);
-            return redirect()->route('admin.dashboard');
-        }
-
-        return back()->withErrors(['username' => 'Invalid credentials'])->withInput();
+    if ($admin && Hash::check($credentials['password'], $admin->password)) {
+        Auth::login($admin);
+        return redirect()->route('admin.dashboard');
     }
+
+    return back()->withErrors(['username' => 'Invalid credentials'])->withInput();
+}
 
     public function logout(Request $request)
     {

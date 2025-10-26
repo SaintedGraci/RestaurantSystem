@@ -1,99 +1,98 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\MenuItem;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
 class MenuItemController extends Controller
 {
+    // Display a listing of the menu items
+    public function index()
+    {
+        $menuItems = MenuItem::paginate(10); // Use pagination for better UX
+        return view('admin.manageUser.index_menu_items', compact('menuItems'));
+    }
+
+    // Show the form for creating a new menu item
+    public function create()
+    {
+        return view('admin.manageUser.create_menu_item');
+    }
+
+    // Store a newly created menu item in storage
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'group_name' => ['required', 'string', 'in:Main Course,Dessert,Drink,Appetizer,Side Dish'],
-            'link' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'price' => ['required', 'numeric', 'min:0'],
-            'image' => ['nullable', 'image', 'max:2048'], // Max 2MB
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'group_name' => 'required|string|max:255', // Assuming you have a group name
+            'price' => 'required|numeric',
+            'link' => 'nullable|url', // Assuming you have a link field
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
         ]);
 
-        $imagePath = null;
+        // Handle image upload if present
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('menu_images', 'public');
+        } else {
+            $imagePath = null; // Or set a default image path
         }
 
-        MenuItem::create([
-            'name' => $validated['name'],
-            'group_name' => $validated['group_name'],
-            'link' => $validated['link'],
-            'description' => $validated['description'],
-            'price' => $validated['price'],
-            'image' => $imagePath,
-        ]);
+        MenuItem::create(array_merge($request->all(), ['image' => $imagePath]));
 
-        return back()->with('success', 'Menu item added successfully!');
+        return redirect()->route('admin.menu-items.index')->with('success', 'Menu item created successfully!');
     }
 
-    public function edit(int $id)
+    // Show the form for editing the specified menu item
+    public function edit($id)
     {
         $menuItem = MenuItem::findOrFail($id);
-        return view('admin.manageUser.partials.edit_menu_item', compact('menuItem'));
+        return view('admin.manageUser.edit_menu_item', compact('menuItem'));
     }
 
-    public function update(Request $request, int $id)
+    // Update the specified menu item in storage
+    public function update(Request $request, $id)
     {
-        $menuItem = MenuItem::findOrFail($id);
-
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'group_name' => ['required', 'string', 'in:Main Course,Dessert,Drink,Appetizer,Side Dish'],
-            'link' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'price' => ['required', 'numeric', 'min:0'],
-            'image' => ['nullable', 'image', 'max:2048'], // Max 2MB
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'group_name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'link' => 'nullable|url',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $imagePath = $menuItem->image; // Keep existing image path by default
+        $menuItem = MenuItem::findOrFail($id);
 
+        // Handle image upload if present
         if ($request->hasFile('image')) {
-            // Delete old image if it exists
+            // Delete old image if necessary
             if ($menuItem->image) {
-                Storage::disk('public')->delete($menuItem->image);
+                \Storage::disk('public')->delete($menuItem->image);
             }
             $imagePath = $request->file('image')->store('menu_images', 'public');
-        } elseif ($request->boolean('remove_image')) {
-            // Remove image if checkbox is ticked
-            if ($menuItem->image) {
-                Storage::disk('public')->delete($menuItem->image);
-            }
-            $imagePath = null;
+        } else {
+            $imagePath = $menuItem->image; // Keep the old image if no new one is uploaded
         }
 
-        $menuItem->update([
-            'name' => $validated['name'],
-            'group_name' => $validated['group_name'],
-            'link' => $validated['link'],
-            'description' => $validated['description'],
-            'price' => $validated['price'],
-            'image' => $imagePath,
-        ]);
+        $menuItem->update(array_merge($request->all(), ['image' => $imagePath]));
 
-        return redirect()->route('admin.menu-items.index')->with('status', 'Menu item updated successfully!');
+        return redirect()->route('admin.menu-items.index')->with('success', 'Menu item updated successfully!');
     }
 
-    public function destroy(int $id)
+    // Remove the specified menu item from storage
+    public function destroy($id)
     {
         $menuItem = MenuItem::findOrFail($id);
-
+        
+        // Delete the image if it exists
         if ($menuItem->image) {
-            Storage::disk('public')->delete($menuItem->image);
+            \Storage::disk('public')->delete($menuItem->image);
         }
 
         $menuItem->delete();
 
-        return redirect()->route('admin.menu-items.index')->with('status', 'Menu item deleted successfully!');
+        return redirect()->route('admin.menu-items.index')->with('success', 'Menu item deleted successfully!');
     }
 }
